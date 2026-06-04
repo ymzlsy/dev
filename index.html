@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>平台功能地图 · 沈阳客运职培管理系统</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f5f7fa; --panel: #fff; --line: #e3e8ef; --ink: #1f2937; --ink2: #6b7280;
+    --brand: #2563eb; --brand-soft: #eff4ff; --green: #16a34a; --orange: #ea580c;
+    --get: #16a34a; --post: #2563eb; --put: #d97706; --del: #dc2626;
+  }
+  * { box-sizing: border-box; font-family: 'Noto Sans SC', system-ui, sans-serif; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); }
+  body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+  /* ===== 顶栏 ===== */
+  header {
+    flex-shrink: 0; background: var(--panel); border-bottom: 1px solid var(--line);
+    padding: 10px 20px; display: flex; align-items: center; gap: 20px;
+  }
+  .logo { font-size: 17px; font-weight: 700; color: var(--brand); white-space: nowrap; }
+  .logo small { color: var(--ink2); font-weight: 400; font-size: 12px; margin-left: 8px; }
+  .stats { display: flex; gap: 8px; }
+  .chip {
+    background: var(--brand-soft); color: var(--brand); border-radius: 14px;
+    padding: 3px 12px; font-size: 12px; font-weight: 600; white-space: nowrap;
+  }
+  .search-box { margin-left: auto; position: relative; }
+  .search-box input {
+    width: 320px; padding: 8px 14px 8px 34px; border: 1px solid var(--line);
+    border-radius: 8px; font-size: 13px; outline: none; transition: border .2s;
+  }
+  .search-box input:focus { border-color: var(--brand); }
+  .search-box::before {
+    content: '🔍'; position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    font-size: 13px; opacity: .5;
+  }
+  .view-tabs { display: flex; gap: 4px; }
+  .view-tab {
+    padding: 7px 14px; font-size: 13px; border: 1px solid var(--line); background: #fff;
+    cursor: pointer; color: var(--ink2); border-radius: 7px; font-weight: 500;
+  }
+  .view-tab.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+
+  /* ===== 主体 ===== */
+  .body { flex: 1; display: flex; overflow: hidden; }
+  .sidebar {
+    width: 340px; flex-shrink: 0; background: var(--panel); border-right: 1px solid var(--line);
+    overflow-y: auto; padding: 8px 0;
+  }
+  .main { flex: 1; overflow-y: auto; padding: 22px 28px; }
+
+  /* 模块树 */
+  .mod {
+    margin: 2px 8px; border-radius: 8px; overflow: hidden;
+  }
+  .mod-head {
+    display: flex; align-items: center; gap: 8px; padding: 9px 12px; cursor: pointer;
+    font-size: 14px; font-weight: 600; border-radius: 8px;
+  }
+  .mod-head:hover { background: var(--brand-soft); }
+  .mod-head .caret { font-size: 10px; color: var(--ink2); transition: transform .2s; }
+  .mod.open .mod-head .caret { transform: rotate(90deg); }
+  .mod-head .cn { flex: 1; }
+  .mod-head .en { font-size: 11px; color: var(--ink2); font-weight: 400; }
+  .mod-head .cnt { background: #eef1f5; color: var(--ink2); border-radius: 10px; padding: 1px 8px; font-size: 11px; }
+  .mod-pages { display: none; padding: 2px 0 6px 0; }
+  .mod.open .mod-pages { display: block; }
+  .page-item {
+    padding: 6px 12px 6px 32px; font-size: 12.5px; cursor: pointer; color: var(--ink2);
+    border-left: 2px solid transparent; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .page-item:hover { background: #f3f6fb; color: var(--ink); }
+  .page-item.active { background: var(--brand-soft); color: var(--brand); border-left-color: var(--brand); font-weight: 600; }
+
+  /* 接口列表（接口视图）*/
+  .ep-item {
+    margin: 2px 8px; padding: 8px 12px; border-radius: 8px; cursor: pointer; border: 1px solid transparent;
+  }
+  .ep-item:hover { background: #f3f6fb; }
+  .ep-item.active { background: var(--brand-soft); border-color: #cfe0ff; }
+  .ep-url { font-family: ui-monospace, monospace; font-size: 12px; color: var(--ink); word-break: break-all; }
+  .ep-meta { display: flex; gap: 6px; align-items: center; margin-top: 4px; }
+
+  /* 详情面板 */
+  .detail-empty { color: var(--ink2); text-align: center; margin-top: 80px; font-size: 14px; }
+  .d-crumb { font-size: 12px; color: var(--ink2); margin-bottom: 4px; }
+  .d-title { font-size: 22px; font-weight: 700; margin: 0 0 4px 0; }
+  .d-path { font-family: ui-monospace, monospace; font-size: 12px; color: var(--ink2); margin-bottom: 18px; word-break: break-all; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 16px 18px; margin-bottom: 16px;
+  }
+  .card h3 { margin: 0 0 12px 0; font-size: 14px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .card h3 .hint { font-size: 12px; color: var(--ink2); font-weight: 400; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { background: #f1f5f9; color: #475569; border-radius: 6px; padding: 3px 10px; font-size: 12.5px; }
+  .tag.field { background: #fff7ed; color: #c2410c; }
+
+  /* 术语对照表 */
+  .term-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .term-table th { text-align: left; padding: 7px 10px; background: #f1f5f9; color: #475569; font-weight: 600; border-bottom: 1px solid var(--line); }
+  .term-table td { padding: 7px 10px; border-bottom: 1px dashed var(--line); vertical-align: top; color: #374151; }
+  .term-table .tcell-ui { color: #c2410c; font-weight: 600; white-space: nowrap; }
+  .term-table .tcell-code { font-family: ui-monospace, monospace; font-size: 12px; color: #2563eb; word-break: break-all; }
+  .term-table tr:hover td { background: #f8fafc; }
+
+  /* 接口行 */
+  .api-row {
+    display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px dashed var(--line);
+    cursor: pointer;
+  }
+  .api-row:last-child { border-bottom: none; }
+  .api-row:hover .api-cmt { color: var(--brand); text-decoration: underline; }
+  .method {
+    font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; color: #fff;
+    text-transform: uppercase; min-width: 42px; text-align: center; flex-shrink: 0;
+  }
+  .method.get { background: var(--get); } .method.post { background: var(--post); }
+  .method.put { background: var(--put); } .method.delete { background: var(--del); }
+  .method.unknown { background: #94a3b8; }
+  .api-cmt { font-size: 13px; color: var(--ink); flex-shrink: 0; }
+  .api-url { font-family: ui-monospace, monospace; font-size: 11.5px; color: var(--ink2); margin-left: auto; word-break: break-all; text-align: right; }
+
+  /* 数据血缘：用此接口的页面 */
+  .lineage-page {
+    display: flex; align-items: center; gap: 8px; padding: 7px 0; font-size: 13px; cursor: pointer;
+    border-bottom: 1px dashed var(--line);
+  }
+  .lineage-page:last-child { border-bottom: none; }
+  .lineage-page:hover { color: var(--brand); }
+  .lineage-page .mod-badge { font-size: 11px; background: #eef1f5; color: var(--ink2); border-radius: 6px; padding: 1px 8px; }
+  .reuse-flag { font-size: 12px; color: var(--orange); background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 2px 8px; }
+
+  /* 搜索结果 */
+  .sr-group-title { font-size: 12px; color: var(--ink2); font-weight: 600; padding: 10px 14px 4px; }
+  .empty-search { padding: 20px 14px; color: var(--ink2); font-size: 13px; }
+  mark { background: #fde68a; color: inherit; padding: 0 1px; border-radius: 2px; }
+
+  .loading { text-align: center; margin-top: 100px; color: var(--ink2); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">平台功能地图 <small>沈阳客运职培管理系统 · intelligent-training-management</small></div>
+  <div class="stats" id="stats"></div>
+  <div class="view-tabs">
+    <div class="view-tab active" data-view="page">按页面</div>
+    <div class="view-tab" data-view="endpoint">按数据接口</div>
+  </div>
+  <div class="search-box">
+    <input id="search" placeholder="搜中文字段 / 接口 / 页面，如：告警、考勤、排课" autocomplete="off"/>
+  </div>
+</header>
+
+<div class="body">
+  <div class="sidebar" id="sidebar"><div class="loading">加载中…</div></div>
+  <div class="main" id="main"><div class="detail-empty">← 从左侧选择一个页面或接口</div></div>
+</div>
+
+<script>
+const MODULE_CN = {
+  education: '教务管理', screens: '数据大屏', myteaching: '我的教学（教师端）',
+  resources: '教学资源库', dataAnalysis: '数据分析', management: '综合管理',
+  usermanage: '用户管理', equipment: '设备管理', evaluationOfTeaching: '教学评价',
+  system: '系统管理', courseAdministration: '课程管理', dashboard: '工作台 / 首页',
+  courseScheduling: '排课管理', intelligentTeaching: '智能教学', zhengshu: '证书管理',
+  nested: '（框架·嵌套示例）', components: '（公共组件）', 'index.vue': '（框架页）',
+  '404.vue': '（错误页）', 'login.vue': '（登录页）', 'redirect.vue': '（重定向）',
+  tree: '（示例·树）', form: '（示例·表单）', table: '（示例·表格）', routerView: '（框架·路由容器）',
+};
+const cn = m => MODULE_CN[m] || m;
+
+let DATA = null, ENRICH = {}, curView = 'page', curPageFile = null, curEndpoint = null;
+
+Promise.all([
+  fetch('./data/sitemap.json').then(r => r.json()),
+  fetch('./data/enriched.json').then(r => r.json()).catch(() => ({ byFile: {} })),
+]).then(([d, enr]) => {
+  DATA = d;
+  ENRICH = enr.byFile || {};
+  // 建索引
+  DATA.pageByFile = {};
+  DATA.pages.forEach(p => DATA.pageByFile[p.file] = p);
+  DATA.epByUrl = {};
+  DATA.endpoints.forEach(e => DATA.epByUrl[e.url] = e);
+  renderStats();
+  renderSidebar();
+}).catch(e => {
+  document.getElementById('sidebar').innerHTML = '<div class="loading">加载 sitemap.json 失败：' + e + '<br>请用本地服务器打开（见 README）</div>';
+});
+
+function renderStats() {
+  const m = DATA.meta;
+  document.getElementById('stats').innerHTML = `
+    <span class="chip">${m.moduleCount} 模块</span>
+    <span class="chip">${m.pageCount} 页面</span>
+    <span class="chip">${m.apiFuncCount} 接口函数</span>
+    <span class="chip">${m.endpointCount} 数据端点</span>`;
+}
+
+/* ===== 视图切换 ===== */
+document.querySelectorAll('.view-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.view-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    curView = t.dataset.view;
+    document.getElementById('search').value = '';
+    renderSidebar();
+  });
+});
+
+/* ===== 侧栏 ===== */
+function renderSidebar() {
+  if (curView === 'page') renderModuleTree();
+  else renderEndpointList();
+}
+
+function renderModuleTree() {
+  const sb = document.getElementById('sidebar');
+  const byMod = {};
+  DATA.pages.forEach(p => (byMod[p.module] = byMod[p.module] || []).push(p));
+  // 按页面数排序，业务模块在前
+  const mods = DATA.modules.map(m => m.name);
+  sb.innerHTML = mods.map(mod => {
+    const pages = (byMod[mod] || []).sort((a,b) => a.file.localeCompare(b.file));
+    return `<div class="mod" data-mod="${mod}">
+      <div class="mod-head">
+        <span class="caret">▶</span>
+        <span class="cn">${cn(mod)}</span>
+        <span class="en">${mod}</span>
+        <span class="cnt">${pages.length}</span>
+      </div>
+      <div class="mod-pages">
+        ${pages.map(p => `<div class="page-item" data-file="${p.file}" title="${p.file}">${pageShortName(p)}</div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  sb.querySelectorAll('.mod-head').forEach(h => {
+    h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
+  });
+  sb.querySelectorAll('.page-item').forEach(it => {
+    it.addEventListener('click', () => showPage(it.dataset.file));
+  });
+}
+
+function pageShortName(p) {
+  // 优先用 LLM 提炼的产品名（更可读），否则用文件路径
+  const en = ENRICH[p.file];
+  if (en && en.productTitle) return en.productTitle;
+  return p.file.split('/').slice(1).join('/').replace(/\.vue$/, '');
+}
+
+function renderEndpointList() {
+  const sb = document.getElementById('sidebar');
+  sb.innerHTML = '<div class="sr-group-title">按复用次数排序（数据被多页面共享 = 在一处配、多处用）</div>' +
+    DATA.endpoints.slice(0, 400).map(e => endpointItemHtml(e)).join('');
+  bindEndpointItems(sb);
+}
+
+function endpointItemHtml(e) {
+  const reuse = e.pageCount >= 3 ? `<span class="reuse-flag">${e.pageCount} 页共用</span>` : `<span class="ep-meta-cnt" style="font-size:11px;color:#6b7280">${e.pageCount} 页</span>`;
+  return `<div class="ep-item" data-url="${encodeURIComponent(e.url)}">
+    <div class="ep-url">${e.url}</div>
+    <div class="ep-meta">${e.methods.map(m => methodBadge(m)).join(' ')} ${reuse}</div>
+  </div>`;
+}
+function bindEndpointItems(root) {
+  root.querySelectorAll('.ep-item').forEach(it => {
+    it.addEventListener('click', () => showEndpoint(decodeURIComponent(it.dataset.url)));
+  });
+}
+
+function methodBadge(m) {
+  const k = (m || 'unknown').toLowerCase();
+  return `<span class="method ${['get','post','put','delete'].includes(k)?k:'unknown'}">${m||'?'}</span>`;
+}
+
+/* ===== 页面详情 ===== */
+const PT_COLORS = { '配置端':'#7c3aed', '展示端':'#2563eb', '操作端':'#16a34a', '分析端':'#d97706', '子组件':'#6b7280', '其他':'#94a3b8' };
+
+function showPage(file) {
+  curPageFile = file; curEndpoint = null;
+  document.querySelectorAll('.page-item').forEach(x => x.classList.toggle('active', x.dataset.file === file));
+  const p = DATA.pageByFile[file];
+  if (!p) return;
+  const en = ENRICH[file] || {};
+  const main = document.getElementById('main');
+  const fields = p.titleCandidates || [];
+  const apis = p.usedApis || [];
+  const title = en.productTitle || guessPageTitle(p);
+  const ptColor = PT_COLORS[en.pageType] || '#6b7280';
+  main.innerHTML = `
+    <div class="d-crumb">${cn(p.module)} <span class="en" style="color:#9ca3af">/ ${p.module}</span>
+      ${en.pageType ? `<span style="background:${ptColor};color:#fff;border-radius:10px;padding:2px 10px;font-size:11px;margin-left:8px">${en.pageType}</span>` : ''}</div>
+    <h1 class="d-title">${title}</h1>
+    <div class="d-path">src/views/${p.file}</div>
+
+    ${en.summary ? `<div class="card" style="border-left:3px solid ${ptColor}"><h3>💡 这个页面是干什么的</h3><div style="line-height:1.75;font-size:14px;color:#1f2937">${en.summary}</div></div>` : (p.description ? `<div class="card"><h3>📝 代码注释说明</h3>${p.description}</div>` : '')}
+
+    ${en.dataSource ? `<div class="card"><h3>🔗 数据从哪来 / 在哪配置 <span class="hint">解决“数据在 A 菜单设置、在 B 菜单展示”的困惑</span></h3><div style="line-height:1.75;font-size:13.5px;color:#374151">${en.dataSource}</div></div>` : ''}
+
+    ${(en.terms && en.terms.length) ? `<div class="card"><h3>📖 字段术语对照 <span class="hint">界面叫法 ↔ 代码/接口字段 ↔ 含义，专治名字对不上</span></h3>
+      <table class="term-table"><thead><tr><th style="width:26%">界面字段</th><th style="width:30%">代码/接口字段</th><th>含义</th></tr></thead><tbody>
+      ${en.terms.map(t => `<tr><td class="tcell-ui">${t.uiLabel || ''}</td><td class="tcell-code">${t.codeField || '—'}</td><td>${t.meaning || ''}</td></tr>`).join('')}
+      </tbody></table></div>` : ''}
+
+    <div class="card">
+      <h3>🔌 这个页面调用的数据接口 <span class="hint">共 ${apis.length} 个 · 点接口看“数据从哪来、还被哪些页面用”</span></h3>
+      ${apis.length ? apis.map(a => apiRowHtml(a)).join('') : '<span class="hint">（未检测到 @/api 调用，可能是纯展示页或用了全局/父组件数据）</span>'}
+    </div>
+
+    <div class="card">
+      <h3>🏷️ 页面字段 / 标签（原始提取） <span class="hint">模板里所有 label/title 关键词</span></h3>
+      ${fields.length ? `<div class="tags">${fields.map(f => `<span class="tag field">${f}</span>`).join('')}</div>` : '<span class="hint">（无）</span>'}
+    </div>
+  `;
+  main.querySelectorAll('.api-row').forEach(r => {
+    r.addEventListener('click', () => { if (r.dataset.url) showEndpoint(r.dataset.url); });
+  });
+  main.scrollTop = 0;
+}
+
+function guessPageTitle(p) {
+  if (p.description) return p.description.split(/[-—·]/)[0].slice(0, 20) || pageShortName(p);
+  if (p.titleCandidates && p.titleCandidates.length) {
+    // 取最像标题的（短）
+    return p.file.split('/').slice(-1)[0].replace(/\.vue$/, '');
+  }
+  return p.file.split('/').slice(-1)[0].replace(/\.vue$/, '');
+}
+
+function apiRowHtml(a) {
+  const label = a.comment || a.func;
+  return `<div class="api-row" data-url="${a.url || ''}">
+    ${methodBadge(a.method)}
+    <span class="api-cmt">${label}</span>
+    <span class="api-url">${a.url || '（未解析 url）'}</span>
+  </div>`;
+}
+
+/* ===== 接口详情（数据血缘）===== */
+function showEndpoint(url) {
+  curEndpoint = url; curPageFile = null;
+  // 若在接口视图，高亮
+  document.querySelectorAll('.ep-item').forEach(x => x.classList.toggle('active', decodeURIComponent(x.dataset.url||'') === url));
+  const e = DATA.epByUrl[url];
+  const main = document.getElementById('main');
+  if (!e) {
+    main.innerHTML = `<div class="d-crumb">数据接口</div><h1 class="d-title" style="font-family:ui-monospace">${url}</h1>
+      <div class="card"><span class="hint">该接口未建立反向索引（可能 url 含动态变量被拆分）。</span></div>`;
+    return;
+  }
+  const definedComments = e.definedBy.map(db => {
+    const [file, fn] = db.split('::');
+    // 找注释
+    let cmt = '';
+    const af = DATA.apis.find(a => a.file === file);
+    if (af) { const f = af.functions.find(x => x.name === fn); if (f) cmt = f.comment; }
+    return { file, fn, cmt };
+  });
+  main.innerHTML = `
+    <div class="d-crumb">数据接口（后端端点）</div>
+    <h1 class="d-title" style="font-size:18px;font-family:ui-monospace;word-break:break-all">${e.url}</h1>
+    <div class="d-path">${e.methods.map(m => methodBadge(m)).join(' ')} &nbsp; 被 ${e.pageCount} 个页面使用</div>
+
+    <div class="card">
+      <h3>🧬 定义这个接口的 API 函数 <span class="hint">前端调用入口</span></h3>
+      ${definedComments.map(d => `<div class="api-row" style="cursor:default">
+        <span class="api-cmt">${d.cmt || d.fn}</span>
+        <span class="api-url">${d.file} · ${d.fn}()</span>
+      </div>`).join('')}
+    </div>
+
+    <div class="card">
+      <h3>📍 哪些页面用到这个数据 <span class="hint">${e.pageCount>=3?'高复用：典型“一处配置、多处展示”——这正是你说的“数据在 A 菜单设置、在 B 菜单出现”':'点页面跳转查看'}</span></h3>
+      ${e.usedByPages.length ? e.usedByPages.map(f => {
+        const pg = DATA.pageByFile[f];
+        const mod = pg ? pg.module : f.split('/')[0];
+        return `<div class="lineage-page" data-file="${f}">
+          <span class="mod-badge">${cn(mod)}</span>
+          <span>${f.replace(/\.vue$/, '')}</span>
+        </div>`;
+      }).join('') : '<span class="hint">（仅在 API 层定义，未检测到页面直接 import）</span>'}
+    </div>
+  `;
+  main.querySelectorAll('.lineage-page').forEach(lp => {
+    lp.addEventListener('click', () => {
+      // 切回页面视图并展开
+      switchToPageView();
+      showPage(lp.dataset.file);
+      expandModuleFor(lp.dataset.file);
+    });
+  });
+  main.scrollTop = 0;
+}
+
+function switchToPageView() {
+  if (curView !== 'page') {
+    curView = 'page';
+    document.querySelectorAll('.view-tab').forEach(x => x.classList.toggle('active', x.dataset.view === 'page'));
+    renderSidebar();
+  }
+}
+function expandModuleFor(file) {
+  const mod = file.split('/')[0];
+  const el = document.querySelector(`.mod[data-mod="${mod}"]`);
+  if (el) { el.classList.add('open'); el.scrollIntoView({block:'nearest'}); }
+  const pi = document.querySelector(`.page-item[data-file="${CSS.escape(file)}"]`);
+  if (pi) pi.classList.add('active');
+}
+
+/* ===== 搜索 ===== */
+let searchTimer = null;
+document.getElementById('search').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  const q = e.target.value.trim();
+  searchTimer = setTimeout(() => doSearch(q), 200);
+});
+
+function doSearch(q) {
+  if (!q) { renderSidebar(); return; }
+  const sb = document.getElementById('sidebar');
+  const ql = q.toLowerCase();
+  // 匹配页面（产品名/说明/术语/字段候选/文件名/接口注释）
+  const pageHits = DATA.pages.filter(p => {
+    const en = ENRICH[p.file] || {};
+    return p.file.toLowerCase().includes(ql) ||
+      (en.productTitle||'').includes(q) ||
+      (en.summary||'').includes(q) ||
+      (en.terms||[]).some(t => (t.uiLabel||'').includes(q) || (t.meaning||'').includes(q) || (t.codeField||'').toLowerCase().includes(ql)) ||
+      (p.titleCandidates||[]).some(t => t.includes(q)) ||
+      (p.usedApis||[]).some(a => (a.comment||'').includes(q));
+  }).slice(0, 60);
+  // 匹配接口（url / 注释）
+  const epHits = DATA.endpoints.filter(ep =>
+    ep.url.toLowerCase().includes(ql) ||
+    ep.definedBy.some(db => db.toLowerCase().includes(ql))
+  ).slice(0, 60);
+  // 匹配接口注释（从 apis）
+  const cmtHits = [];
+  DATA.apis.forEach(af => af.functions.forEach(f => {
+    if (f.comment && f.comment.includes(q) && f.url) cmtHits.push({...f, file: af.file});
+  }));
+
+  let html = '';
+  if (cmtHits.length) {
+    html += `<div class="sr-group-title">📋 匹配的功能接口（${Math.min(cmtHits.length,40)}）</div>`;
+    html += cmtHits.slice(0,40).map(f => `<div class="ep-item" data-url="${encodeURIComponent(f.url)}">
+      <div class="ep-url">${hl(f.comment, q)}</div>
+      <div class="ep-meta">${methodBadge(f.method)} <span style="font-size:11px;color:#6b7280">${f.url}</span></div>
+    </div>`).join('');
+  }
+  if (pageHits.length) {
+    html += `<div class="sr-group-title">📄 匹配的页面（${pageHits.length}）</div>`;
+    html += pageHits.map(p => {
+      const en = ENRICH[p.file] || {};
+      const label = en.productTitle || p.file.split('/').slice(1).join('/');
+      return `<div class="page-item" data-file="${p.file}" style="padding-left:14px;white-space:normal" title="${p.file}">
+        <span class="mod-badge" style="font-size:10px;background:#eef1f5;color:#6b7280;border-radius:5px;padding:1px 6px;margin-right:6px">${cn(p.module)}</span>${hl(label, q)}</div>`;
+    }).join('');
+  }
+  if (!html) html = '<div class="empty-search">没找到匹配「' + q + '」的页面或接口。<br>试试更短的词，如“告警/考勤/课/考试/设备”。</div>';
+  sb.innerHTML = html;
+  sb.querySelectorAll('.page-item').forEach(it => it.addEventListener('click', () => showPage(it.dataset.file)));
+  bindEndpointItems(sb);
+}
+
+function hl(text, q) {
+  if (!q) return text;
+  try { return text.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi'), '<mark>$1</mark>'); }
+  catch(e) { return text; }
+}
+</script>
+</body>
+</html>
