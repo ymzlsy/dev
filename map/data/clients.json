@@ -1,0 +1,14 @@
+{
+  "clients": [
+    {
+      "key": "main",
+      "name": "主干版 (master)",
+      "branch": "master",
+      "desc": "当前分析的主干分支，尚未对应具体客户定制。后续拉到某客户分支后，按 REGEN.md 增量生成，加到这里。",
+      "pageCount": 699,
+      "moduleCount": 25,
+      "endpointCount": 1167,
+      "updatedAt": "2026-06-05"
+    }
+  ]
+}

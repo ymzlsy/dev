@@ -1,6 +1,6 @@
 # Cloudflare Pages 部署排除（中间产物不上线，仅上线 index.html + data/sitemap.json + data/enriched.json）
-data/enriched/
-data/batches.json
+map/data/*/enriched/
+map/data/*/batches.json
 *.py
 serve.js
 .gitignore
