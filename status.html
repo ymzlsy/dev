@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>项目状态 & 更新记录 · Karaithy Dev</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink:#1a1a2e; --ink2:#4b5563; --ink3:#9ca3af; --line:#e8eaf0; --bg:#fbfbfd; --panel:#fff;
+    --brand:#d97706; --brand-soft:#fff7ed;
+    --t-feat:#2563eb; --t-feat-bg:#eff5ff;
+    --t-opt:#d97706;  --t-opt-bg:#fff7ed;
+    --t-sec:#dc2626;  --t-sec-bg:#fef2f2;
+    --t-fix:#16a34a;  --t-fix-bg:#f0fdf4;
+    --shadow:0 1px 3px rgba(20,20,40,.05),0 8px 28px rgba(20,20,40,.06);
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:'Noto Sans SC',system-ui,sans-serif; color:var(--ink); background:var(--bg); line-height:1.7; -webkit-font-smoothing:antialiased; }
+  .topbar { position:sticky; top:0; z-index:50; background:rgba(251,251,253,.85); backdrop-filter:saturate(160%) blur(12px); border-bottom:1px solid var(--line); }
+  .topbar-inner { max-width:920px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; gap:14px; }
+  .home-link { font-size:18px; color:var(--ink2); text-decoration:none; padding:2px 10px; border-radius:7px; border:1px solid var(--line); }
+  .home-link:hover { background:var(--brand-soft); color:var(--brand); }
+  .brand-mark { font-weight:800; font-size:17px; letter-spacing:-.5px; }
+  .brand-mark .ai { color:var(--brand); }
+  .topbar .sub { color:var(--ink3); font-size:13px; }
+  .wrap { max-width:920px; margin:0 auto; padding:0 24px; }
+
+  .hero { padding:40px 0 18px; }
+  .hero h1 { font-size:30px; margin:0 0 6px; letter-spacing:-.5px; }
+  .hero .lead { color:var(--ink2); font-size:15px; margin:0; }
+  .live-dot { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:#16a34a; font-weight:600; margin-left:10px; }
+  .live-dot::before { content:''; width:8px; height:8px; border-radius:50%; background:#16a34a; box-shadow:0 0 0 0 rgba(22,163,74,.5); animation:pulse 2s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(22,163,74,.5)} 70%{box-shadow:0 0 0 8px rgba(22,163,74,0)} 100%{box-shadow:0 0 0 0 rgba(22,163,74,0)} }
+
+  /* 状态总览卡 */
+  .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin:18px 0 8px; }
+  .stat { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow); }
+  .stat .k { font-size:12.5px; color:var(--ink3); margin-bottom:5px; }
+  .stat .v { font-size:22px; font-weight:700; color:var(--ink); }
+  .stat .v.sm { font-size:15px; }
+  .stat .v.brand { color:var(--brand); }
+  .note-line { background:var(--brand-soft); border-left:3px solid var(--brand); border-radius:0 10px 10px 0; padding:12px 16px; font-size:13.5px; color:#7c4a08; margin:14px 0 0; }
+
+  /* 里程碑 */
+  .milestones { display:flex; flex-wrap:wrap; gap:10px; margin:14px 0 0; }
+  .ms { display:flex; align-items:center; gap:7px; font-size:13px; padding:6px 12px; border-radius:20px; border:1px solid var(--line); background:var(--panel); }
+  .ms.done { background:#f0fdf4; border-color:#bbf7d0; color:#15803d; }
+  .ms.todo { color:var(--ink3); }
+  .ms .dot { width:14px; height:14px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:10px; }
+  .ms.done .dot { background:#16a34a; color:#fff; }
+  .ms.todo .dot { border:1.5px dashed var(--ink3); }
+
+  /* 筛选 */
+  .filter { display:flex; gap:8px; flex-wrap:wrap; margin:30px 0 16px; align-items:center; }
+  .filter .lbl { font-size:13px; color:var(--ink3); margin-right:4px; }
+  .chip { font-size:13px; padding:5px 14px; border-radius:20px; border:1px solid var(--line); background:var(--panel); color:var(--ink2); cursor:pointer; transition:all .15s; }
+  .chip:hover { border-color:var(--brand); }
+  .chip.active { background:var(--brand); border-color:var(--brand); color:#fff; }
+
+  /* 时间线 */
+  .timeline { position:relative; padding-left:30px; margin:8px 0 70px; }
+  .timeline::before { content:''; position:absolute; left:9px; top:6px; bottom:6px; width:2px; background:linear-gradient(var(--line),var(--line)); }
+  .entry { position:relative; margin-bottom:22px; }
+  .entry::before { content:''; position:absolute; left:-26px; top:6px; width:14px; height:14px; border-radius:50%; background:#fff; border:3px solid var(--brand); box-shadow:0 0 0 3px var(--bg); }
+  .entry .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 20px; box-shadow:var(--shadow); }
+  .entry .top { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .entry .date { font-size:12.5px; color:var(--ink3); font-family:ui-monospace,monospace; }
+  .entry .type { font-size:11.5px; font-weight:600; padding:2px 10px; border-radius:20px; }
+  .type.新功能 { color:var(--t-feat); background:var(--t-feat-bg); }
+  .type.优化 { color:var(--t-opt); background:var(--t-opt-bg); }
+  .type.安全 { color:var(--t-sec); background:var(--t-sec-bg); }
+  .type.修复 { color:var(--t-fix); background:var(--t-fix-bg); }
+  .entry h3 { margin:0; font-size:16.5px; }
+  .entry ul { margin:8px 0 0; padding-left:20px; font-size:14px; color:#2b3040; }
+  .entry li { margin:4px 0; }
+
+  footer { border-top:1px solid var(--line); padding:24px 0; font-size:13px; color:var(--ink3); }
+  @media (max-width:600px){ .hero h1{font-size:24px} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="./" class="home-link" title="返回看板主页">←</a>
+    <span class="brand-mark">Kar<span class="ai">ai</span>thy <span style="color:var(--ink3);font-weight:500;font-size:14px">Dev</span></span>
+    <span class="sub">· 项目状态 & 更新记录</span>
+  </div>
+</div>
+
+<header class="hero wrap">
+  <h1>项目状态 & 更新记录 <span class="live-dot" id="liveDot">运行中</span></h1>
+  <p class="lead">这个看板做了什么、现在什么状态、每次更新改了什么 —— 一页看全。<span id="lastUpdate"></span></p>
+</header>
+
+<section class="wrap">
+  <div class="stat-grid" id="statGrid"></div>
+  <div class="note-line" id="noteLine"></div>
+  <div style="font-size:13px;color:var(--ink3);margin:26px 0 8px;font-weight:600;letter-spacing:1px;">进度里程碑</div>
+  <div class="milestones" id="milestones"></div>
+</section>
+
+<section class="wrap">
+  <div class="filter" id="filter">
+    <span class="lbl">更新记录</span>
+    <span class="chip active" data-type="all">全部</span>
+    <span class="chip" data-type="新功能">新功能</span>
+    <span class="chip" data-type="优化">优化</span>
+    <span class="chip" data-type="安全">安全</span>
+    <span class="chip" data-type="修复">修复</span>
+  </div>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<footer class="wrap">
+  数据来源 status.json · 每次更新会同步刷新 · <a href="./" style="color:var(--ink2)">返回看板</a>
+</footer>
+
+<script>
+let DATA = null, curFilter = 'all';
+fetch('./status.json').then(r => r.json()).then(d => {
+  DATA = d;
+  document.getElementById('lastUpdate').textContent = d.updatedAt ? `最后更新 ${d.updatedAt}` : '';
+  document.getElementById('liveDot').style.display = d.current && d.current.online ? '' : 'none';
+  renderStats(d.current || {});
+  renderMilestones(d.milestones || []);
+  renderTimeline();
+}).catch(e => {
+  document.getElementById('timeline').innerHTML = '<div style="color:#dc2626">加载 status.json 失败：' + e + '</div>';
+});
+
+function renderStats(c) {
+  const cards = [
+    { k:'在线状态', v: c.online ? '运行中' : '离线', cls:'sm brand' },
+    { k:'当前客户数', v: c.clients ?? '—' },
+    { k:'总页面数', v: c.pages ?? '—' },
+    { k:'数据接口', v: c.endpoints ?? '—' },
+    { k:'部署方式', v: c.deploy || '—', cls:'sm' },
+    { k:'访问保护', v: c.auth || '—', cls:'sm' },
+  ];
+  document.getElementById('statGrid').innerHTML = cards.map(s =>
+    `<div class="stat"><div class="k">${s.k}</div><div class="v ${s.cls||''}">${s.v}</div></div>`).join('');
+  document.getElementById('noteLine').textContent = '💡 ' + (c.note || '');
+}
+
+function renderMilestones(ms) {
+  document.getElementById('milestones').innerHTML = ms.map(m =>
+    `<span class="ms ${m.done?'done':'todo'}"><span class="dot">${m.done?'✓':''}</span>${m.label}</span>`).join('');
+}
+
+function renderTimeline() {
+  const list = (DATA.timeline || []).filter(e => curFilter === 'all' || e.type === curFilter);
+  document.getElementById('timeline').innerHTML = list.map(e => `
+    <div class="entry">
+      <div class="card">
+        <div class="top">
+          <span class="type ${e.type}">${e.type}</span>
+          <h3>${e.title}</h3>
+          <span class="date" style="margin-left:auto">${e.date}</span>
+        </div>
+        <ul>${(e.items||[]).map(i => `<li>${i}</li>`).join('')}</ul>
+      </div>
+    </div>`).join('') || '<div style="color:var(--ink3);padding:10px">该类型暂无记录</div>';
+}
+
+document.getElementById('filter').addEventListener('click', ev => {
+  const c = ev.target.closest('.chip'); if (!c) return;
+  document.querySelectorAll('.filter .chip').forEach(x => x.classList.remove('active'));
+  c.classList.add('active');
+  curFilter = c.dataset.type;
+  renderTimeline();
+});
+</script>
+</body>
+</html>
