@@ -24,6 +24,8 @@
   .logo small { color: var(--ink2); font-weight: 400; font-size: 12px; margin-left: 8px; }
   .home-link { font-size: 18px; color: var(--ink2); text-decoration: none; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--line); }
   .home-link:hover { background: var(--brand-soft); color: var(--brand); }
+  .status-btn-top { font-size: 13px; color: #fff; background: var(--brand); padding: 5px 12px; border-radius: 7px; text-decoration: none; font-weight: 600; white-space: nowrap; }
+  .status-btn-top:hover { background: #1d4ed8; color: #fff; }
   .client-switch { display: flex; align-items: center; gap: 8px; }
   .client-switch select {
     font-size: 13px; padding: 5px 10px; border: 1px solid var(--brand); border-radius: 7px;
@@ -154,6 +156,7 @@
 
 <header>
   <a href="../" class="home-link" title="返回 dev 项目主页">←</a>
+  <a href="../status" class="status-btn-top" title="项目状态 & 更新记录">📊 状态/更新</a>
   <div class="logo">功能地图</div>
   <div class="client-switch">
     <select id="clientSelect" title="切换客户 / 分支"></select>
