@@ -14,7 +14,8 @@ import os, re, json, sys, hashlib
 
 SRC = os.environ.get("SRC") or \
     "/Users/apple/Desktop/ja_project/260506-shenyang/projects/项目源码/前端/intelligent-training-management/src"
-OUT = os.path.join(os.path.dirname(__file__), "data", "sitemap.json")
+CLIENT = os.environ.get("CLIENT", "main")
+OUT = os.path.join(os.path.dirname(__file__), "map", "data", CLIENT, "sitemap.json")
 
 # ---------- 1. 解析 API 文件 ----------
 def parse_api_file(path, rel):

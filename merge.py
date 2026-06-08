@@ -4,8 +4,9 @@
 import json, glob, os
 
 HERE = os.path.dirname(__file__)
-ENR = os.path.join(HERE, "data", "enriched")
-OUT = os.path.join(HERE, "data", "enriched.json")
+CLIENT = os.environ.get("CLIENT", "main")
+ENR = os.path.join(HERE, "map", "data", CLIENT, "enriched")
+OUT = os.path.join(HERE, "map", "data", CLIENT, "enriched.json")
 
 byFile = {}
 nbatch = 0

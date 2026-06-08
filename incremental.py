@@ -24,7 +24,8 @@
 import os, json, sys
 
 HERE = os.path.dirname(__file__)
-DATA = os.path.join(HERE, "data")
+CLIENT = os.environ.get("CLIENT", "main")
+DATA = os.path.join(HERE, "map", "data", CLIENT)
 SITEMAP = os.path.join(DATA, "sitemap.json")
 ENRICHED = os.path.join(DATA, "enriched.json")
 BASE_DIR = os.path.join(DATA, "baseline")

@@ -8,8 +8,9 @@ import os, json
 from collections import defaultdict
 
 HERE = os.path.dirname(__file__)
-SITEMAP = os.path.join(HERE, "data", "sitemap.json")
-BATCHES = os.path.join(HERE, "data", "batches.json")
+CLIENT = os.environ.get("CLIENT", "main")
+SITEMAP = os.path.join(HERE, "map", "data", CLIENT, "sitemap.json")
+BATCHES = os.path.join(HERE, "map", "data", CLIENT, "batches.json")
 BATCH_SIZE = 12
 SKIP = {"index.vue", "404.vue", "login.vue", "redirect.vue", "routerView"}
 
