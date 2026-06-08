@@ -79,3 +79,10 @@ CLIENT=$CLIENT python3 merge.py
 - 不设 `CLIENT` 时默认 `main`（当前主干 master 的数据）。
 - 部署是 `git push`（dev 已连 ymzlsy/dev 自动部署），不用 wrangler。
 - 看板含客户系统细节，已加 Basic Auth（凭证见 SSOT / progress.txt）。
+
+## 每次更新别忘了：刷一条状态记录
+
+每次对这个看板做改动（加客户、改功能、修问题）后，往 `status.json` 的 `timeline[]` 顶部加一条：
+`{"date":"YYYY-MM-DD","type":"新功能|优化|安全|修复","title":"一句话","items":["做了啥","做了啥"]}`
+并更新 `current` 里的指标和 `updatedAt`。这样 dev.karaithy.com 的「📊 项目状态」页就会自动刷新。
+（实际操作里：你让我更新看板时，我会顺手帮你加这条记录。）
