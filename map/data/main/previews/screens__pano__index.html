@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>全景管控大屏 - 线框预览</title>
+<style>
+  body { margin: 0; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #0a1628; color: #cfe3ff; }
+  .ai-banner { height: 28px; line-height: 28px; background: #e6862b; color: #fff; font-size: 12px; text-align: center; }
+  .screen { position: relative; padding: 0 0 12px; background: linear-gradient(180deg, #0a1628, #0f1f3a); }
+  /* 头部 */
+  header { position: relative; height: 64px; display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid #1e4d8c; background: #0c1b34; }
+  header .title { font-size: 26px; font-weight: bold; color: #2ee6ff; letter-spacing: 8px; }
+  header .full-btn { position: absolute; left: 16px; border: 1px solid #2ee6ff; color: #2ee6ff; font-size: 13px; padding: 4px 14px; border-radius: 3px; background: rgba(46,230,255,.08); }
+  header .date { position: absolute; right: 16px; font-size: 13px; color: #8fb8e8; }
+  /* 顶部按钮组 -->
+  /* 按钮组 */
+  .btns { display: flex; gap: 18px; justify-content: center; padding: 12px 0 4px; }
+  .btns .cus-btn { border: 1px solid #2ee6ff; color: #2ee6ff; font-size: 17px; padding: 10px 28px; border-radius: 3px; background: rgba(46,230,255,.1); }
+  .btns .cus-btn.active-hint { background: rgba(46,230,255,.22); }
+  /* 三栏布局 */
+  .grid { display: flex; gap: 12px; padding: 8px 12px 0; }
+  .col-side { width: 232px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; }
+  .col-mid { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+  .panel { background: rgba(15,31,58,.92); border: 1px solid #1e4d8c; border-radius: 4px; padding: 10px; }
+  .panel-title { font-size: 14px; color: #2ee6ff; border-left: 3px solid #2ee6ff; padding-left: 8px; margin-bottom: 10px; font-weight: bold; }
+  .chart-ph { border: 1px dashed #2a5a9c; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #6fa8e0; font-size: 13px; text-align: center;
+    background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(46,110,180,.15) 8px, rgba(46,110,180,.15) 10px); }
+  /* 当天培训情况 */
+  .situation { display: flex; }
+  .situation .item { flex: 1; text-align: center; }
+  .situation .item .t { font-size: 13px; color: #8fb8e8; }
+  .situation .item .v { font-size: 24px; color: #2ee6ff; font-weight: bold; margin-top: 4px; }
+  /* tab 条 */
+  .tabs { display: flex; gap: 16px; border-bottom: 1px solid #1e4d8c; margin-bottom: 8px; font-size: 13px; }
+  .tabs .tab { padding: 4px 2px; color: #8fb8e8; }
+  .tabs .tab.on { color: #2ee6ff; border-bottom: 2px solid #2ee6ff; }
+  .tab-bar { display: inline-block; width: 46px; height: 10px; background: #2a4a78; border-radius: 2px; }
+  /* 分页 */
+  .pagi { display: flex; gap: 6px; justify-content: center; margin-top: 8px; }
+  .pagi span { width: 22px; height: 22px; line-height: 22px; text-align: center; font-size: 12px; background: #122a50; border: 1px solid #2a5a9c; border-radius: 2px; color: #8fb8e8; }
+  /* 排行榜表格 */
+  table.scr { width: 100%; border-collapse: collapse; font-size: 12px; }
+  table.scr th { color: #2ee6ff; background: #122a50; padding: 5px 4px; font-weight: normal; }
+  table.scr td { padding: 6px 4px; border-bottom: 1px solid #16335c; }
+  td .row-bar { display: block; height: 9px; background: #1d3a66; border-radius: 2px; }
+  /* 视频区 */
+  .videos { display: flex; gap: 10px; }
+  .videos .v-ph { flex: 1; height: 110px; border: 1px dashed #2a5a9c; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #6fa8e0; font-size: 12px;
+    background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(46,110,180,.15) 8px, rgba(46,110,180,.15) 10px); }
+  .note { font-size: 11px; color: #5f7da6; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="ai-banner">&#9888; AI 根据源码重建的结构示意图，非真实运行截图</div>
+<div class="screen">
+
+  <!-- 页面标题部分 -->
+  <header>
+    <div class="full-btn">全屏 / 退出全屏</div>
+    <div class="title">智能培训</div>
+    <div class="date">YYYY-MM-DD HH:mm:ss（实时时间）</div>
+  </header>
+
+  <!-- 顶部按钮组：切换四个大屏 -->
+  <div class="btns">
+    <div class="cus-btn active-hint">智慧教室</div>
+    <div class="cus-btn">智能实训</div>
+    <div class="cus-btn">智慧教务</div>
+    <div class="cus-btn">智能考评</div>
+  </div>
+
+  <div class="grid">
+    <!-- 左列 -->
+    <div class="col-side">
+      <div class="panel">
+        <div class="panel-title">当天培训情况</div>
+        <div class="situation">
+          <div class="item"><div class="t">参培总人数</div><div class="v">--</div></div>
+          <div class="item"><div class="t">参培班级</div><div class="v">--</div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">当月培训班整体进度</div>
+        <div class="chart-ph" style="height:180px;">图表</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">当月培训班详细进度</div>
+        <div class="chart-ph" style="height:200px;">柱状图（培训班进度，每页 6 条）</div>
+        <div class="pagi"><span>&#8249;</span><span>1</span><span>2</span><span>3</span><span>&#8250;</span></div>
+      </div>
+    </div>
+
+    <!-- 中间列 -->
+    <div class="col-mid">
+      <div class="chart-ph" style="height:120px;">图表（培训指标数据显示 — 中间四个指标率）</div>
+      <div class="chart-ph" style="flex:1;min-height:240px;">3D 全景场景（基地全景管控，铺满背景）</div>
+      <div class="panel">
+        <div class="panel-title">智能巡课、智能实训</div>
+        <div class="tabs">
+          <div class="tab on"><span class="tab-bar"></span></div>
+          <div class="tab"><span class="tab-bar"></span></div>
+          <div class="tab"><span class="tab-bar"></span></div>
+        </div>
+        <div class="note" style="margin:0 0 6px;">楼层 Tab（来自字典数据，按楼层切换监控）</div>
+        <div class="videos">
+          <div class="v-ph">监控视频</div>
+          <div class="v-ph">监控视频</div>
+          <div class="v-ph">监控视频（轮播）</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右列 -->
+    <div class="col-side">
+      <div class="panel">
+        <div class="panel-title">学员群体技能画像</div>
+        <div class="tabs">
+          <div class="tab on"><span class="tab-bar"></span></div>
+          <div class="tab"><span class="tab-bar"></span></div>
+        </div>
+        <div class="note" style="margin:0 0 6px;">画像分类 Tab（来自字典数据）</div>
+        <div class="chart-ph" style="height:150px;">图表（技能画像）</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">教室排行榜</div>
+        <table class="scr">
+          <tr><th><span class="tab-bar"></span></th><th><span class="tab-bar"></span></th><th><span class="tab-bar"></span></th></tr>
+          <tr><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td></tr>
+          <tr><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td></tr>
+        </table>
+      </div>
+      <div class="panel">
+        <div class="panel-title">实训室排行榜</div>
+        <table class="scr">
+          <tr><th><span class="tab-bar"></span></th><th><span class="tab-bar"></span></th><th><span class="tab-bar"></span></th></tr>
+          <tr><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td></tr>
+          <tr><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

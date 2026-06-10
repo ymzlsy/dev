@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>考务数据分析 - 线框预览</title>
+<style>
+  body { margin: 0; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #f0f2f5; color: #303133; }
+  .ai-banner { height: 28px; line-height: 28px; background: #e6862b; color: #fff; font-size: 12px; text-align: center; }
+  .wrap { padding: 20px; }
+  .card { background: #fff; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+  /* el-tabs 风格 */
+  .tabs { display: flex; border-bottom: 2px solid #e4e7ed; }
+  .tabs .tab { width: 130px; text-align: center; font-size: 16px; padding: 14px 0; color: #303133; position: relative; }
+  .tabs .tab.on { color: #409EFF; font-weight: bold; }
+  .tabs .tab.on::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: #409EFF; }
+  /* 头部 -->
+  /* 头部 tab 卡片 */
+  .header-card { padding: 20px 40px; }
+  /* 中部两栏 */
+  .center { margin-top: 20px; display: flex; gap: 20px; }
+  .center .half { flex: 1; }
+  .block-title { height: 56px; display: flex; align-items: center; padding-left: 20px; font-weight: bold; border-bottom: 1px solid #f2f2f2; font-size: 15px; }
+  .chart-ph { margin: 16px 20px 20px; height: 280px; border: 1px dashed #c0c4cc; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #909399; font-size: 14px;
+    background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(64,158,255,.08) 8px, rgba(64,158,255,.08) 10px); }
+  .note { font-size: 12px; color: #909399; padding: 0 20px 16px; }
+</style>
+</head>
+<body>
+<div class="ai-banner">&#9888; AI 根据源码重建的结构示意图，非真实运行截图</div>
+<div class="wrap">
+
+  <!-- 头部：页面级 Tab 切换 -->
+  <div class="card header-card">
+    <div class="tabs">
+      <div class="tab on">基础数据统计</div>
+      <div class="tab">单次考试分析</div>
+    </div>
+    <div class="note" style="padding:12px 0 0;">切到「单次考试分析」时，下方内容整体替换为单次考试分析模块；以下为「基础数据统计」视图。</div>
+  </div>
+
+  <!-- 中部：左右两块 -->
+  <div class="center">
+    <div class="card half">
+      <div class="block-title">理论试题类型分析</div>
+      <div class="chart-ph">柱状图（无数据时显示「暂无数据」）</div>
+    </div>
+    <div class="card half">
+      <div class="tabs" style="padding-left:20px;">
+        <div class="tab on">理论试题难度</div>
+        <div class="tab">实作试题难度</div>
+      </div>
+      <div class="chart-ph">饼图（试题难度分布）</div>
+    </div>
+  </div>
+
+  <!-- 底部：活跃趋势 -->
+  <div class="card" style="margin-top:20px;">
+    <div class="tabs" style="padding-left:20px;">
+      <div class="tab on">理论类活跃趋势</div>
+      <div class="tab">实作类活跃趋势</div>
+    </div>
+    <div class="chart-ph">折线图（活跃趋势）</div>
+  </div>
+</div>
+</body>
+</html>

@@ -191,7 +191,8 @@ const MODULE_CN = {
 const cn = m => MODULE_CN[m] || m;
 
 let DATA = null, ENRICH = {}, curView = 'page', curPageFile = null, curEndpoint = null;
-let CLIENTS = [], curClient = null;
+let CLIENTS = [], curClient = null, PREVIEWS = new Set();
+const previewKey = f => f.replace(/\//g, '__').replace(/\.vue$/, '');
 
 // 先加载客户索引，再加载默认客户的数据
 fetch('./data/clients.json').then(r => r.json()).then(cfg => {
@@ -222,9 +223,11 @@ function loadClient(key) {
   Promise.all([
     fetch(`./data/${key}/sitemap.json`).then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
     fetch(`./data/${key}/enriched.json`).then(r => r.ok ? r.json() : { byFile: {} }).catch(() => ({ byFile: {} })),
-  ]).then(([d, enr]) => {
+    fetch(`./data/${key}/previews/index.json`).then(r => r.ok ? r.json() : []).catch(() => []),
+  ]).then(([d, enr, pv]) => {
     DATA = d;
     ENRICH = enr.byFile || {};
+    PREVIEWS = new Set(pv || []);
     DATA.pageByFile = {};
     DATA.pages.forEach(p => DATA.pageByFile[p.file] = p);
     DATA.epByUrl = {};
@@ -280,7 +283,7 @@ function renderModuleTree() {
         <span class="cnt">${pages.length}</span>
       </div>
       <div class="mod-pages">
-        ${pages.map(p => `<div class="page-item" data-file="${p.file}" title="${p.file}">${pageShortName(p)}</div>`).join('')}
+        ${pages.map(p => `<div class="page-item" data-file="${p.file}" title="${p.file}">${PREVIEWS.has(previewKey(p.file)) ? '🖼️ ' : ''}${pageShortName(p)}</div>`).join('')}
       </div>
     </div>`;
   }).join('');
@@ -362,11 +365,28 @@ function showPage(file) {
       <h3>🏷️ 页面字段 / 标签（原始提取） <span class="hint">模板里所有 label/title 关键词</span></h3>
       ${fields.length ? `<div class="tags">${fields.map(f => `<span class="tag field">${f}</span>`).join('')}</div>` : '<span class="hint">（无）</span>'}
     </div>
+    <div id="previewSlot"></div>
   `;
   main.querySelectorAll('.api-row').forEach(r => {
     r.addEventListener('click', () => { if (r.dataset.url) showEndpoint(r.dataset.url); });
   });
+  loadPreview(file);
   main.scrollTop = 0;
+}
+
+/* ============ 页面结构预览（AI 据源码重建的线框图，存在才显示）============ */
+function loadPreview(file) {
+  const slot = document.getElementById('previewSlot');
+  if (!slot) return;
+  const key = previewKey(file);
+  if (!PREVIEWS.has(key)) return;
+  const url = `./data/${curClient}/previews/${key}.html`;
+  slot.innerHTML = `
+    <div class="card">
+      <h3>🖼️ 页面结构预览 <span class="hint">AI 根据源码重建的线框示意，非真实运行截图 ·
+        <a href="${url}" target="_blank" style="color:var(--brand)">新窗口打开 ↗</a></span></h3>
+      <iframe src="${url}" style="width:100%;height:560px;border:1px solid var(--line);border-radius:10px;background:#fff" loading="lazy"></iframe>
+    </div>`;
 }
 
 function guessPageTitle(p) {

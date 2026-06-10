@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>myteaching/training — 培训项目 线框预览</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #303133; font-size: 13px; }
+  .ai-banner { height: 28px; line-height: 28px; background: #E6A23C; color: #fff; font-size: 12px; text-align: center; }
+  .page { background: #fff; padding: 16px 20px; }
+  .page-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; }
+  .actions-wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  .query-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .input { height: 30px; border: 1px solid #dcdfe6; border-radius: 4px; background: #fff; padding: 0 8px; color: #c0c4cc; line-height: 28px; }
+  .select::after { content: "▾"; float: right; color: #c0c4cc; }
+  .btn { display: inline-block; height: 30px; line-height: 28px; padding: 0 12px; border-radius: 4px; border: 1px solid #dcdfe6; background: #fff; color: #606266; font-size: 12px; }
+  .btn-primary { background: #409EFF; border-color: #409EFF; color: #fff; }
+  .btn-danger  { background: #F56C6C; border-color: #F56C6C; color: #fff; }
+  .btn-info    { background: #909399; border-color: #909399; color: #fff; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: #f5f7fa; color: #606266; font-weight: 600; padding: 10px 8px; border-bottom: 1px solid #ebeef5; text-align: left; font-size: 13px; }
+  td { padding: 12px 8px; border-bottom: 1px solid #ebeef5; text-align: left; }
+  .ph { display: inline-block; height: 12px; background: #e4e7ed; border-radius: 3px; vertical-align: middle; }
+  .progress { display: inline-flex; align-items: center; gap: 6px; width: 100%; }
+  .progress .bar { flex: 1; height: 6px; border-radius: 3px; background: #ebeef5; position: relative; overflow: hidden; }
+  .progress .bar::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 45%; background: #409EFF; border-radius: 3px; }
+  .progress .pct { color: #909399; font-size: 12px; }
+  .link { color: #409EFF; margin-right: 8px; }
+  .pager { display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding: 16px 0 4px; color: #606266; font-size: 12px; }
+  .pg { width: 26px; height: 26px; line-height: 24px; text-align: center; border: 1px solid #dcdfe6; border-radius: 4px; background: #fff; }
+  .pg.on { background: #409EFF; border-color: #409EFF; color: #fff; }
+  .note { color: #909399; font-size: 12px; padding: 10px 20px; }
+</style>
+</head>
+<body>
+<div class="ai-banner">&#9888; AI 根据源码重建的结构示意图，非真实运行截图</div>
+<div class="page">
+  <div class="page-title">培训项目</div>
+  <!-- 查询栏 + 右侧操作按钮 -->
+  <div class="actions-wrap">
+    <div class="query-form">
+      <div class="input select" style="width:140px">选择年</div>
+      <div class="input select" style="width:140px">选择月份</div>
+      <div class="input select" style="width:140px">培训类别</div>
+      <div class="input" style="width:160px">请输入项目名</div>
+      <div class="input" style="width:160px">请输入项目编号</div>
+      <span class="btn btn-primary">查询</span>
+    </div>
+    <div>
+      <span class="btn btn-danger">导入培训班</span>
+      <span class="btn btn-info">导入培训项目</span>
+      <span class="btn btn-primary">+ 创建培训项目</span>
+    </div>
+  </div>
+  <!-- 表格 -->
+  <table>
+    <thead>
+      <tr>
+        <th style="width:34%">项目名称</th>
+        <th style="width:80px">计划年份</th>
+        <th style="width:120px">计划办班时间</th>
+        <th style="width:100px">培训级别</th>
+        <th style="width:80px">项目分类</th>
+        <th style="width:80px">参与学员</th>
+        <th style="width:20%">培训进度</th>
+        <th style="width:200px">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="ph" style="width:75%"></span></td>
+        <td><span class="ph" style="width:40px"></span></td>
+        <td><span class="ph" style="width:60px"></span></td>
+        <td><span class="ph" style="width:50px"></span></td>
+        <td>计划内</td>
+        <td><span class="ph" style="width:30px"></span></td>
+        <td><span class="progress"><span class="bar"></span><span class="pct">45%</span></span></td>
+        <td><span class="link">培训实施</span><span class="link">培训班状态</span><span class="link">删除</span></td>
+      </tr>
+      <tr>
+        <td><span class="ph" style="width:60%"></span></td>
+        <td><span class="ph" style="width:40px"></span></td>
+        <td><span class="ph" style="width:60px"></span></td>
+        <td><span class="ph" style="width:50px"></span></td>
+        <td>计划外</td>
+        <td><span class="ph" style="width:30px"></span></td>
+        <td><span class="progress"><span class="bar"></span><span class="pct">45%</span></span></td>
+        <td><span class="link">培训实施</span><span class="link">培训班状态</span><span class="link">删除</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- 分页器 -->
+  <div class="pager">
+    <span>共 <b>—</b> 条</span>
+    <span class="pg">‹</span><span class="pg on">1</span><span class="pg">2</span><span class="pg">3</span><span class="pg">›</span>
+    <div class="input select" style="width:90px;height:26px;line-height:24px;font-size:12px">10条/页</div>
+  </div>
+</div>
+<div class="note">说明：页面还包含「创建培训项目」抽屉、「培训项目导入」「培训班导入」上传弹窗、「培训班状态」列表弹窗，此处未绘制。</div>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>排课设置 — 线框预览</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { margin: 0; font-family: "PingFang SC","Microsoft YaHei",sans-serif; background: #f0f2f5; color: #303133; font-size: 13px; }
+  .ai-banner { height: 28px; line-height: 28px; background: #e6a23c; color: #fff; font-size: 12px; text-align: center; }
+  .page { background: #fff; margin: 12px; border-radius: 4px; padding: 24px 20px; }
+  .hint { margin-bottom: 18px; padding: 8px 10px; background: #f7f9fc; border-left: 3px solid #409EFF; color: #909399; font-size: 12px; }
+  .frow { display: flex; margin-bottom: 22px; align-items: flex-start; }
+  .flabel { width: 150px; text-align: right; padding-right: 12px; color: #606266; line-height: 32px; flex-shrink: 0; }
+  .fcontent { flex: 1; }
+  .pair { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .pair .lab { width: 90px; color: #606266; }
+  .time { display: inline-flex; align-items: center; height: 32px; padding: 0 10px; border: 1px solid #dcdfe6; border-radius: 4px; background: #fff; color: #c0c4cc; font-size: 12px; min-width: 150px; }
+  .time .clock { margin-right: 6px; color: #c0c4cc; }
+  .time .txt { flex: 1; }
+  .num-input { display: inline-flex; height: 32px; border: 1px solid #dcdfe6; border-radius: 4px; overflow: hidden; width: 130px; }
+  .num-input .val { flex: 1; line-height: 30px; text-align: center; }
+  .num-input .val .bar { display: inline-block; width: 24px; height: 12px; background: #dcdfe6; border-radius: 3px; }
+  .num-input .ctrls { width: 30px; border-left: 1px solid #dcdfe6; display: flex; flex-direction: column; }
+  .num-input .ctrls span { flex: 1; text-align: center; font-size: 9px; color: #909399; background: #f5f7fa; line-height: 15px; }
+  .num-input .ctrls span:first-child { border-bottom: 1px solid #dcdfe6; }
+  .dash { color: #909399; }
+  .suffix { color: #606266; margin-left: 6px; }
+</style>
+</head>
+<body>
+<div class="ai-banner">&#9888; AI 根据源码重建的结构示意图，非真实运行截图</div>
+<div class="page">
+
+  <div class="hint">排课模块的子组件：纯表单页，用于设置课表的时间区间、上午/下午默认时间和每节课时数。</div>
+
+  <!-- 课表时间区间 -->
+  <div class="frow">
+    <div class="flabel">课表时间区间:</div>
+    <div class="fcontent">
+      <div class="pair">
+        <span class="lab">起始时间</span>
+        <span class="time"><span class="clock">&#128340;</span><span class="txt">起始时间</span></span>
+      </div>
+      <div class="pair">
+        <span class="lab">结束时间</span>
+        <span class="time"><span class="clock">&#128340;</span><span class="txt">结束时间</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 默认时间设置 -->
+  <div class="frow">
+    <div class="flabel">默认时间设置:</div>
+    <div class="fcontent">
+      <div class="pair">
+        <span class="lab">上午</span>
+        <span class="time"><span class="clock">&#128340;</span><span class="txt">起始时间</span></span>
+        <span class="dash">-</span>
+        <span class="time"><span class="clock">&#128340;</span><span class="txt">结束时间</span></span>
+      </div>
+      <div class="pair">
+        <span class="lab">下午</span>
+        <span class="time"><span class="clock">&#128340;</span><span class="txt">起始时间</span></span>
+        <span class="dash">-</span>
+        <span class="time"><span class="clock">&#128340;</span><span class="txt">结束时间</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 默认课节课时 -->
+  <div class="frow">
+    <div class="flabel">默认课节课时:</div>
+    <div class="fcontent">
+      <div class="pair">
+        <span class="lab">每节课时数</span>
+        <span class="num-input">
+          <span class="val"><span class="bar"></span></span>
+          <span class="ctrls"><span>&#9650;</span><span>&#9660;</span></span>
+        </span>
+        <span class="suffix">课时</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

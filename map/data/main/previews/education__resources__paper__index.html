@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>实训试卷 — 线框预览</title>
+<style>
+body{margin:0;font-family:"PingFang SC","Helvetica Neue",Arial,sans-serif;background:#f0f2f5;color:#303133;font-size:13px;}
+.warn{height:28px;line-height:28px;background:#E6A23C;color:#fff;font-size:12px;text-align:center;}
+.card{background:#fff;margin:12px;border:1px solid #ebeef5;border-radius:4px;box-shadow:0 2px 4px rgba(0,0,0,.04);}
+.card-header{padding:14px 20px;border-bottom:1px solid #ebeef5;font-size:15px;font-weight:600;}
+.card-body{padding:16px 20px;}
+.tags-area{border:1px dashed #c0c4cc;border-radius:4px;padding:10px 14px;margin-bottom:14px;background:#fafafa;}
+.tags-area .row{display:flex;align-items:center;margin:4px 0;}
+.tags-area .label{color:#909399;width:78px;flex-shrink:0;}
+.tag{display:inline-block;border:1px solid #d9ecff;background:#ecf5ff;color:#409EFF;border-radius:4px;padding:2px 10px;margin-right:8px;font-size:12px;}
+.tag.placeholder{background:#f0f0f0;border-color:#e0e0e0;color:transparent;min-width:48px;height:18px;}
+.actions-wrap{display:flex;justify-content:space-between;flex-wrap:wrap;align-items:flex-start;margin-bottom:10px;gap:8px;}
+.query{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.input{height:30px;line-height:30px;border:1px solid #dcdfe6;border-radius:4px;padding:0 10px;color:#c0c4cc;background:#fff;}
+.input.w200{width:180px;}
+.select{height:30px;line-height:30px;border:1px solid #dcdfe6;border-radius:4px;padding:0 24px 0 10px;color:#c0c4cc;background:#fff;position:relative;}
+.select::after{content:"▾";position:absolute;right:8px;color:#c0c4cc;}
+.btn{display:inline-block;height:30px;line-height:30px;padding:0 12px;border-radius:4px;font-size:12px;border:1px solid transparent;cursor:default;}
+.btn-primary{background:#409EFF;color:#fff;}
+.btn-success{background:#67C23A;color:#fff;}
+.btn-warning{background:#E6A23C;color:#fff;}
+.btn-danger{background:#F56C6C;color:#fff;opacity:.6;}
+.btn-text{color:#409EFF;background:none;padding:0 4px;height:auto;line-height:normal;}
+.choice{display:flex;justify-content:space-between;align-items:center;margin:8px 0;color:#606266;}
+.checkbox{display:inline-flex;align-items:center;gap:6px;}
+.cb{width:14px;height:14px;border:1px solid #dcdfe6;border-radius:2px;background:#fff;display:inline-block;}
+.col-setting{color:#266fe8;cursor:default;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:#f5f7fa;color:#909399;font-weight:600;text-align:left;padding:10px 8px;border-bottom:1px solid #ebeef5;white-space:nowrap;}
+td{padding:12px 8px;border-bottom:1px solid #ebeef5;}
+tr.stripe td{background:#fafafa;}
+.bar{display:inline-block;height:12px;border-radius:2px;background:#e4e7ed;}
+.pagination{display:flex;justify-content:flex-end;align-items:center;gap:6px;padding:14px 0 4px;color:#606266;}
+.page{width:26px;height:26px;line-height:26px;text-align:center;border-radius:4px;background:#f4f4f5;}
+.page.active{background:#409EFF;color:#fff;}
+</style>
+</head>
+<body>
+<div class="warn">⚠ AI 根据源码重建的结构示意图，非真实运行截图</div>
+<div class="card">
+  <div class="card-header">实训试卷</div>
+  <div class="card-body">
+
+    <!-- 标签筛选区（resources-tags 组件） -->
+    <div class="tags-area">
+      <div class="row"><span class="label">实训设备</span>
+        <span class="tag placeholder"></span><span class="tag placeholder"></span><span class="tag placeholder"></span><span class="tag placeholder"></span>
+      </div>
+      <div class="row"><span class="label">业务类型</span>
+        <span class="tag placeholder"></span><span class="tag placeholder"></span><span class="tag placeholder"></span>
+      </div>
+    </div>
+
+    <!-- 查询 + 操作按钮区 -->
+    <div class="actions-wrap">
+      <div class="query">
+        <span class="input w200">实训试卷名称</span>
+        <span class="select">来源</span>
+        <span class="btn btn-primary">查询</span>
+      </div>
+      <div class="query">
+        <span class="btn btn-success">设置实训设备标签</span>
+        <span class="btn btn-warning">设置业务类型标签</span>
+        <span class="btn btn-primary">手动新增</span>
+        <span class="btn btn-danger">批量删除</span>
+      </div>
+    </div>
+
+    <!-- 全选 / 列显示设置 -->
+    <div class="choice">
+      <span class="checkbox"><span class="cb"></span>全选所有页</span>
+      <span class="col-setting">⚙ 列显示设置</span>
+    </div>
+
+    <!-- 数据表格 -->
+    <table>
+      <thead>
+        <tr>
+          <th style="width:40px"><span class="cb"></span></th>
+          <th style="width:60px">序号</th>
+          <th>实训试卷名称</th>
+          <th>实训设备</th>
+          <th>实训试卷时长</th>
+          <th>来源</th>
+          <th>更新时间</th>
+          <th style="width:200px">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="cb"></span></td>
+          <td>1</td>
+          <td><span class="bar" style="width:80%"></span></td>
+          <td><span class="tag">实训设备标签</span></td>
+          <td><span class="bar" style="width:70%"></span>　<span style="color:#909399;font-size:12px">小时/分/秒</span></td>
+          <td>手动新增</td>
+          <td><span class="bar" style="width:75%"></span></td>
+          <td>
+            <span class="btn btn-text">修改</span>
+            <span class="btn btn-text">复制</span>
+            <span class="btn btn-text">删除</span>
+            <span class="btn btn-text">详情</span>
+          </td>
+        </tr>
+        <tr class="stripe">
+          <td><span class="cb"></span></td>
+          <td>2</td>
+          <td><span class="bar" style="width:65%"></span></td>
+          <td><span class="tag">实训设备标签</span></td>
+          <td><span class="bar" style="width:60%"></span></td>
+          <td>实训产品自动同步</td>
+          <td><span class="bar" style="width:75%"></span></td>
+          <td><span class="btn btn-text">详情</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 分页 -->
+    <div class="pagination">
+      <span>共 ‒‒ 条</span>
+      <span class="page">‹</span>
+      <span class="page active">1</span>
+      <span class="page">2</span>
+      <span class="page">3</span>
+      <span class="page">›</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

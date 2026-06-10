@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>全景控制 - 线框预览</title>
+<style>
+  body { margin: 0; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #0a1628; color: #cfe3ff; }
+  .ai-banner { height: 28px; line-height: 28px; background: #e6862b; color: #fff; font-size: 12px; text-align: center; }
+  .wrap { padding: 12px; }
+  /* 顶部信息栏 */
+  .top-info { display: flex; gap: 10px; margin-bottom: 12px; }
+  .top-info .cell { flex: 1; background: #0f1f3a; border: 1px solid #1e4d8c; border-radius: 4px; text-align: center; padding: 10px 4px; }
+  .top-info .cell .label { font-size: 13px; color: #8fb8e8; }
+  .top-info .cell .num { font-size: 22px; color: #2ee6ff; font-weight: bold; }
+  .top-info .cell .unit { font-size: 12px; color: #8fb8e8; margin-left: 2px; }
+  /* 三栏主体 */
+  .main { display: flex; gap: 12px; }
+  .col-left, .col-right { width: 230px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; }
+  .col-center { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+  .panel { background: #0f1f3a; border: 1px solid #1e4d8c; border-radius: 4px; padding: 10px; }
+  .panel-title { font-size: 14px; color: #2ee6ff; border-left: 3px solid #2ee6ff; padding-left: 8px; margin-bottom: 10px; font-weight: bold; }
+  /* 设备状态 */
+  .select-box { border: 1px solid #2a5a9c; border-radius: 3px; height: 26px; line-height: 26px; padding: 0 8px; font-size: 12px; color: #6f93bf; display: flex; justify-content: space-between; margin-bottom: 8px; background: #0a1830; }
+  .kv { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 2px; border-bottom: 1px dashed #16335c; }
+  .kv .v { color: #2ee6ff; }
+  .placeholder-bar { display: inline-block; width: 42px; height: 10px; background: #2a4a78; border-radius: 2px; vertical-align: middle; }
+  /* 图表占位 */
+  .chart-ph { border: 1px dashed #2a5a9c; border-radius: 3px; display: flex; align-items: center; justify-content: center; color: #6fa8e0; font-size: 13px;
+    background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(46,110,180,.15) 8px, rgba(46,110,180,.15) 10px); }
+  /* 大屏表格 */
+  table.scr { width: 100%; border-collapse: collapse; font-size: 11px; }
+  table.scr th { color: #2ee6ff; background: #122a50; padding: 5px 3px; font-weight: normal; white-space: nowrap; }
+  table.scr td { padding: 6px 3px; border-bottom: 1px solid #16335c; }
+  td .row-bar { display: block; height: 9px; background: #1d3a66; border-radius: 2px; }
+  /* 底部按钮 */
+  .btn-row { display: flex; gap: 14px; justify-content: center; }
+  .pano-btn { border: 1px solid #2ee6ff; color: #2ee6ff; border-radius: 3px; padding: 8px 22px; font-size: 14px; background: rgba(46,230,255,.08); }
+  /* 环境状态 */
+  .env-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .env-item { display: flex; align-items: center; gap: 8px; background: #0a1830; border: 1px solid #16335c; border-radius: 3px; padding: 8px; }
+  .env-icon { width: 28px; height: 28px; border-radius: 50%; border: 1px dashed #2a5a9c; flex-shrink: 0; }
+  .env-item .val { color: #2ee6ff; font-size: 15px; }
+  .env-item .lab { font-size: 12px; color: #8fb8e8; }
+  /* 当天实训概况 */
+  .train-nums { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; }
+  .train-nums .v { color: #2ee6ff; font-size: 15px; margin-left: 4px; }
+  .note { font-size: 11px; color: #5f7da6; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="ai-banner">&#9888; AI 根据源码重建的结构示意图，非真实运行截图</div>
+<div class="wrap">
+
+  <!-- 顶部信息栏 section-03 -->
+  <div class="top-info">
+    <div class="cell"><div class="label">总设备</div><div><span class="num">--</span><span class="unit">套</span></div></div>
+    <div class="cell"><div class="label">完好</div><div><span class="num">--</span><span class="unit">套</span></div></div>
+    <div class="cell"><div class="label">故障</div><div><span class="num">--</span><span class="unit">套</span></div></div>
+    <div class="cell"><div class="label">实训中</div><div><span class="num">--</span><span class="unit">套</span></div></div>
+    <div class="cell"><div class="label">空闲中</div><div><span class="num">--</span><span class="unit">套</span></div></div>
+    <div class="cell"><div class="label">总功率</div><div><span class="num">--</span><span class="unit">kw</span></div></div>
+  </div>
+
+  <div class="main">
+    <!-- 左列 -->
+    <div class="col-left">
+      <div class="panel">
+        <div class="panel-title">设备状态</div>
+        <div class="select-box"><span>设备下拉选择（可搜索）</span><span>&#9662;</span></div>
+        <div class="kv"><span>健康指数</span><span class="v"><span class="placeholder-bar"></span></span></div>
+        <div class="kv"><span>设备价值</span><span class="v"><span class="placeholder-bar"></span> 万</span></div>
+        <div class="kv"><span>功率</span><span class="v"><span class="placeholder-bar"></span> kw</span></div>
+        <div class="kv"><span>状态</span><span class="v"><span class="placeholder-bar"></span></span></div>
+        <div class="kv"><span>已运行时长</span><span class="v"><span class="placeholder-bar"></span> 小时</span></div>
+        <div class="chart-ph" style="height:110px;margin-top:8px;">折线图（工时统计）</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">基地实时警告</div>
+        <table class="scr">
+          <tr><th>告警区域</th><th>发生时间</th><th>告警类别</th><th>异常描述</th><th>处理状态</th></tr>
+          <tr><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td></tr>
+          <tr><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td></tr>
+        </table>
+        <div class="note">告警类别：低 / 中 / 高（颜色区分）；处理状态：未处理 / 已处理（翻页表格）</div>
+      </div>
+    </div>
+
+    <!-- 中间：设备显示区 -->
+    <div class="col-center">
+      <div class="chart-ph" style="flex:1;min-height:430px;">设备显示区（全景设备分布，点击可选中设备）</div>
+      <!-- 底部按钮 section-04 -->
+      <div class="btn-row">
+        <div class="pano-btn">一键自检</div>
+        <div class="pano-btn">告警列表</div>
+        <div class="pano-btn">维护列表</div>
+        <div class="pano-btn">环境控制</div>
+        <div class="pano-btn">日志</div>
+      </div>
+    </div>
+
+    <!-- 右列 -->
+    <div class="col-right">
+      <div class="panel">
+        <div class="panel-title">环境状态</div>
+        <div class="env-grid">
+          <div class="env-item"><div class="env-icon"></div><div><div class="val">--</div><div class="lab">人体舒适度</div></div></div>
+          <div class="env-item"><div class="env-icon"></div><div><div class="val">--&#8451;</div><div class="lab">室内温度</div></div></div>
+          <div class="env-item"><div class="env-icon"></div><div><div class="val">--%</div><div class="lab">室内湿度</div></div></div>
+          <div class="env-item"><div class="env-icon"></div><div><div class="val">--</div><div class="lab">空气质量</div></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">当天实训概况</div>
+        <div class="train-nums">
+          <span>学生人数<span class="v">--</span>人</span>
+          <span>教师人数<span class="v">--</span>人</span>
+          <span>当前进度<span class="v">--</span>%</span>
+        </div>
+        <div class="chart-ph" style="height:120px;">饼图（实训情况）</div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">培训计划执行状态</div>
+        <table class="scr">
+          <tr><th>实训班级</th><th>实训课程</th><th>实训日期</th><th>实训地点</th><th>执行状态</th></tr>
+          <tr><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td></tr>
+          <tr><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td><td><span class="row-bar"></span></td></tr>
+        </table>
+        <div class="note">执行状态：未开始 / 进行中 / 已结束（翻页表格）</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

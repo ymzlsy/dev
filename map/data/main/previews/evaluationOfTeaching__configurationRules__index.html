@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>评教配置规则 — 线框预览</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { margin: 0; font-family: "PingFang SC","Microsoft YaHei",sans-serif; background: #f0f2f5; color: #303133; font-size: 13px; }
+  .ai-banner { height: 28px; line-height: 28px; background: #e6a23c; color: #fff; font-size: 12px; text-align: center; }
+  .page { background: #fff; margin: 12px; border-radius: 4px; padding: 0 0 20px; }
+  .list-title { width: 96%; margin: 0 auto; line-height: 52px; border-bottom: 1px solid #eee; font-size: 16px; color: #262626; }
+  .section { margin: 20px; }
+  .title-box { display: inline-block; height: 40px; line-height: 40px; padding: 0 16px; border: 1px solid #ccc; border-bottom: none; border-radius: 4px 4px 0 0; background: #f7f9fc; font-weight: 500; }
+  .box { border: 1px solid #ebeef5; border-radius: 0 4px 4px 4px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: #f5f7fa; color: #909399; font-weight: 500; text-align: left; padding: 9px 12px; border-bottom: 1px solid #ebeef5; font-size: 12px; }
+  td { padding: 9px 12px; border-bottom: 1px solid #ebeef5; }
+  tr:last-child td { border-bottom: none; }
+  tr.demo td { background: #fafafa; }
+  .bar { display: inline-block; height: 12px; background: #dcdfe6; border-radius: 3px; }
+  .link { color: #409EFF; font-size: 12px; }
+  /* 弹窗示意 */
+  .dialog-demo { margin: 28px 20px 0; border: 1px dashed #b3d8ff; border-radius: 4px; background: #fbfdff; }
+  .dialog-head { padding: 12px 16px; border-bottom: 1px solid #ebeef5; font-size: 14px; color: #303133; }
+  .dialog-tag { float: right; font-size: 11px; color: #409EFF; background: #ecf5ff; border: 1px solid #b3d8ff; border-radius: 3px; padding: 1px 6px; }
+  .dialog-body { padding: 16px 20px; }
+  .frow { display: flex; margin-bottom: 14px; align-items: flex-start; }
+  .flabel { width: 100px; text-align: right; padding-right: 12px; color: #606266; line-height: 26px; flex-shrink: 0; }
+  .radio { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; color: #606266; }
+  .dot { width: 13px; height: 13px; border: 1px solid #dcdfe6; border-radius: 50%; background: #fff; flex-shrink: 0; }
+  .dot.on { border: 4px solid #409EFF; }
+  .sel { display: inline-block; height: 26px; line-height: 24px; padding: 0 24px 0 10px; border: 1px solid #dcdfe6; border-radius: 4px; background: #fff; color: #c0c4cc; font-size: 12px; position: relative; }
+  .sel::after { content: "\25BE"; position: absolute; right: 8px; color: #c0c4cc; }
+  .ipt { display: inline-flex; width: 180px; height: 28px; border: 1px solid #dcdfe6; border-radius: 4px; overflow: hidden; }
+  .ipt .in { flex: 1; line-height: 26px; padding: 0 8px; color: #c0c4cc; font-size: 12px; }
+  .ipt .append { width: 34px; background: #f5f7fa; border-left: 1px solid #dcdfe6; text-align: center; line-height: 26px; color: #909399; }
+  .dialog-footer { padding: 10px 16px 16px; text-align: right; }
+  .btn { display: inline-block; height: 30px; line-height: 28px; padding: 0 16px; border-radius: 4px; font-size: 12px; border: 1px solid #dcdfe6; background: #fff; color: #606266; margin-left: 8px; }
+  .btn-primary { background: #409EFF; border-color: #409EFF; color: #fff; }
+</style>
+</head>
+<body>
+<div class="ai-banner">&#9888; AI 根据源码重建的结构示意图，非真实运行截图</div>
+<div class="page">
+
+  <div class="list-title">评教配置规则</div>
+
+  <!-- 区块一：培训班质量评估 -->
+  <div class="section">
+    <div class="title-box">培训班质量评估(总分：自动计算)</div>
+    <div class="box">
+      <table>
+        <thead><tr><th style="width:60px">序号</th><th>名称</th><th>数据来源</th><th>权重配比</th><th>创建/更新时间</th><th style="width:80px">操作</th></tr></thead>
+        <tbody>
+          <tr class="demo"><td>1</td><td><span class="bar" style="width:120px"></span></td><td><span class="bar" style="width:100px"></span></td><td><span class="bar" style="width:30px"></span> %</td><td><span class="bar" style="width:120px"></span></td><td><span class="link">编辑</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 区块二：教学质量评估 -->
+  <div class="section">
+    <div class="title-box">教学质量评估(总分：自动计算)</div>
+    <div class="box">
+      <table>
+        <thead><tr><th style="width:60px">序号</th><th>名称</th><th>数据来源</th><th>权重配比</th><th>创建/更新时间</th><th style="width:80px">操作</th></tr></thead>
+        <tbody>
+          <tr class="demo"><td>1</td><td><span class="bar" style="width:120px"></span></td><td><span class="bar" style="width:100px"></span></td><td><span class="bar" style="width:30px"></span> %</td><td><span class="bar" style="width:120px"></span></td><td><span class="link">编辑</span></td></tr>
+          <tr class="demo"><td>2</td><td><span class="bar" style="width:120px"></span></td><td><span class="bar" style="width:100px"></span></td><td><span class="bar" style="width:30px"></span> %</td><td><span class="bar" style="width:120px"></span></td><td><span class="link">编辑</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 区块三：带班质量评估 -->
+  <div class="section">
+    <div class="title-box">带班质量评估(总分：自动计算)</div>
+    <div class="box">
+      <table>
+        <thead><tr><th style="width:60px">序号</th><th>名称</th><th>数据来源</th><th>权重配比</th><th>创建/更新时间</th><th style="width:80px">操作</th></tr></thead>
+        <tbody>
+          <tr class="demo"><td>1</td><td><span class="bar" style="width:120px"></span></td><td><span class="bar" style="width:100px"></span></td><td><span class="bar" style="width:30px"></span> %</td><td><span class="bar" style="width:120px"></span></td><td><span class="link">编辑</span></td></tr>
+          <tr class="demo"><td>2</td><td><span class="bar" style="width:120px"></span></td><td><span class="bar" style="width:100px"></span></td><td><span class="bar" style="width:30px"></span> %</td><td><span class="bar" style="width:120px"></span></td><td><span class="link">编辑</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 点「编辑」后的弹窗 -->
+  <div class="dialog-demo">
+    <div class="dialog-head">添加配置内容 <span class="dialog-tag">点「编辑」后弹出的对话框</span></div>
+    <div class="dialog-body">
+      <div class="frow">
+        <div class="flabel">名称：</div>
+        <div><span class="bar" style="width:120px;margin-top:7px"></span></div>
+      </div>
+      <div class="frow">
+        <div class="flabel">数据来源：</div>
+        <div>
+          <div class="radio"><span class="dot on"></span> 关联评教分类 <span class="sel">请选择</span> ，计算公式： 收集分值*权重</div>
+          <div class="radio"><span class="dot"></span> 外部导入，计算公式：导入数据*权重</div>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="flabel">权重占比：</div>
+        <div class="ipt"><span class="in">权重占比</span><span class="append">%</span></div>
+      </div>
+    </div>
+    <div class="dialog-footer">
+      <span class="btn">取消</span>
+      <span class="btn btn-primary">确定</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

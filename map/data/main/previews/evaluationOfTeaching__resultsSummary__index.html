@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>评教结果汇总 — 线框预览</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { margin: 0; font-family: "PingFang SC","Microsoft YaHei",sans-serif; background: #f0f2f5; color: #303133; font-size: 13px; }
+  .ai-banner { height: 28px; line-height: 28px; background: #e6a23c; color: #fff; font-size: 12px; text-align: center; }
+  .page { background: #fff; margin: 12px; border-radius: 4px; padding: 16px; }
+  .tabs { display: inline-flex; border: 1px solid #dcdfe6; border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
+  .tab { padding: 7px 16px; border-right: 1px solid #dcdfe6; background: #fff; color: #606266; }
+  .tab:last-child { border-right: none; }
+  .tab.active { background: #40a9ff; color: #fff; }
+  .stats { display: flex; gap: 16px; margin-bottom: 16px; }
+  .stat { flex: 1; background: #f7f9fc; border: 1px solid #ebeef5; border-radius: 4px; padding: 14px 16px; text-align: center; }
+  .stat .num { font-size: 22px; font-weight: 600; color: #303133; }
+  .stat .num .ph { display: inline-block; width: 36px; height: 18px; background: #dcdfe6; border-radius: 3px; vertical-align: middle; }
+  .stat .unit { font-size: 12px; color: #909399; font-weight: normal; }
+  .stat .label { margin-top: 6px; color: #909399; font-size: 12px; }
+  .list-title { font-size: 16px; color: #262626; line-height: 40px; border-bottom: 1px solid #eee; margin-bottom: 12px; }
+  .toolbar { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .filters, .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .ctl { height: 30px; line-height: 28px; padding: 0 10px; border: 1px solid #dcdfe6; border-radius: 4px; background: #fff; color: #c0c4cc; font-size: 12px; min-width: 120px; }
+  .ctl .arrow { float: right; color: #c0c4cc; }
+  .btn { height: 30px; line-height: 30px; padding: 0 14px; border-radius: 4px; font-size: 12px; border: 1px solid transparent; }
+  .btn-primary { background: #409EFF; color: #fff; }
+  .btn-success { background: #67c23a; color: #fff; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: #f5f7fa; color: #909399; font-weight: 500; text-align: left; padding: 9px 10px; border-bottom: 1px solid #ebeef5; font-size: 12px; }
+  td { padding: 9px 10px; border-bottom: 1px solid #ebeef5; }
+  tr.demo td { background: #fafafa; }
+  .bar { display: inline-block; height: 12px; background: #dcdfe6; border-radius: 3px; }
+  .link { color: #409EFF; font-size: 12px; margin-right: 8px; }
+  .pager { display: flex; justify-content: flex-end; gap: 4px; margin-top: 14px; }
+  .pg { min-width: 26px; height: 26px; line-height: 26px; text-align: center; border-radius: 4px; background: #f4f4f5; color: #606266; font-size: 12px; }
+  .pg.on { background: #409EFF; color: #fff; }
+  .note { margin-top: 14px; padding: 8px 10px; background: #f7f9fc; border-left: 3px solid #409EFF; color: #909399; font-size: 12px; line-height: 1.7; }
+</style>
+</head>
+<body>
+<div class="ai-banner">&#9888; AI 根据源码重建的结构示意图，非真实运行截图</div>
+<div class="page">
+
+  <!-- 顶部三个评估类型切换 -->
+  <div class="tabs">
+    <div class="tab active">培训班质量评估</div>
+    <div class="tab">教学质量评估</div>
+    <div class="tab">带班质量评估</div>
+  </div>
+
+  <!-- 统计指标条 -->
+  <div class="stats">
+    <div class="stat"><div class="num"><span class="ph"></span> <span class="unit">个</span></div><div class="label">培训班总数</div></div>
+    <div class="stat"><div class="num"><span class="ph"></span> <span class="unit">分</span></div><div class="label">平均分</div></div>
+    <div class="stat"><div class="num"><span class="ph"></span> <span class="unit">分</span></div><div class="label">最高分</div></div>
+    <div class="stat"><div class="num"><span class="ph"></span> <span class="unit">分</span></div><div class="label">最低分</div></div>
+    <div class="stat"><div class="num"><span class="ph"></span> <span class="unit">次</span></div><div class="label">组织评价次数</div></div>
+  </div>
+
+  <div class="list-title">评价列表</div>
+
+  <!-- 筛选 + 操作按钮 -->
+  <div class="toolbar">
+    <div class="filters">
+      <div class="ctl">选择年 <span class="arrow">&#9662;</span></div>
+      <div class="ctl">选择月 <span class="arrow">&#9662;</span></div>
+      <div class="ctl" style="min-width:160px">请选择培训班 <span class="arrow">&#9662;</span></div>
+      <div class="btn btn-primary">查询</div>
+    </div>
+    <div class="actions">
+      <div class="btn btn-success">批量导入培训班质量评估</div>
+      <div class="btn btn-primary">导出</div>
+    </div>
+  </div>
+
+  <!-- 结果表（培训班质量评估视图） -->
+  <table>
+    <thead>
+      <tr><th style="width:60px">序号</th><th>培训班编号</th><th>培训班名称</th><th>培训班起止日期</th><th>总分</th><th style="width:140px">操作</th></tr>
+    </thead>
+    <tbody>
+      <tr class="demo"><td>1</td><td><span class="bar" style="width:90px"></span></td><td><span class="bar" style="width:160px"></span></td><td><span class="bar" style="width:130px"></span></td><td><span class="bar" style="width:40px"></span></td><td><span class="link">查看详情</span><span class="link">导入</span></td></tr>
+      <tr class="demo"><td>2</td><td><span class="bar" style="width:90px"></span></td><td><span class="bar" style="width:160px"></span></td><td><span class="bar" style="width:130px"></span></td><td><span class="bar" style="width:40px"></span></td><td><span class="link">查看详情</span><span class="link">导入</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="pager">
+    <div class="pg">&lsaquo;</div><div class="pg on">1</div><div class="pg">2</div><div class="pg">3</div><div class="pg">&rsaquo;</div>
+  </div>
+
+  <div class="note">
+    切换到「教学质量评估」时：筛选区变为 授课教师 / 机关单位 输入框，操作区为「批量导入随堂听课 / 批量导入教学检查 / 批量导入学员测评」，表格列为：序号、年份、授课教师、教师类型、所在单位、随堂听课、教学检查、学员测评、前三项汇总、加分（可输入）、总分。<br>
+    切换到「带班质量评估」时：操作区为「导入带班质量 / 导入学员测评」，表格列为：排名、年份、班主任姓名、所在单位、所在子单位、带班质量、学员测评、总分。
+  </div>
+
+</div>
+</body>
+</html>
